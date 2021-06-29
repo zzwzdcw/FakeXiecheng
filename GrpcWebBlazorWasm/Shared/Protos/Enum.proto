@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcWebBlazorWasm.Shared";
+
+package TouristRouteProto;
+
+enum TravelDays
+{
+	TRAVEL_DAYS_UNSPECIFIED=0;
+	One=1;
+	Two=2;
+	Three=3;
+	Four=4;
+	Five=5;
+	Six=6;
+	Seven=7;
+	Eight=8;
+	EightPlus=9;
+}
+
+enum TripType
+{
+	TRIP_TYPE_UNSPECIFIED=0;
+    HotelAndAttractions=1; //酒店+景点
+    Group=2; //跟团游
+    PrivateGroup=3; //私家团
+    BackPackTour=4; //自由行
+    SemiBackPackTour=5; //半自助游
+}
+
+enum DepartureCity
+{
+	DEPARTURE_CITY_UNSPECIFIED=0;
+	Beijing=1; //北京
+    Shanghai=2; //上海
+    Canton=3; //广州
+    Shenzhen=4; //深圳
+}

@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcWebBlazorWasm.Shared";  //
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+//*
+import "google/protobuf/wrappers.proto";
+
+import "Enum.proto";
+//*
+import "Decimal.proto";
+
+package TouristRouteProto;
+
+service TouristRouteProtoSevice{
+	rpc GetTouristRoutes(.google.protobuf.Empty) returns (TouristRoutes);
+	rpc GetTouristRoute(TouristRouteId) returns (TouristRoute);
+}
+
+message TouristRoute {
+	string Id=1;
+	string Title=2;
+	string Description=3;
+	//
+	DecimalValue Price=4;	// Price=OriginalPrice * DiscountPresent
+	.google.protobuf.Timestamp CreateTime=5;     //
+	.google.protobuf.Timestamp UpdateTime=6;     //
+	.google.protobuf.Timestamp DepartureTime=7;	 //
+	string Features=8;
+	string Fees=9;
+	string Notes=10;
+	//*
+	.google.protobuf.DoubleValue Rating=11;
+	TravelDays TravelDays=12;
+	TripType TripType=13; 
+	DepartureCity DepartureCity=14; 	
+}
+
+message TouristRoutes{
+	repeated TouristRoute TouristRouteList=1;
+}
+
+message TouristRouteId{
+	string Id=1;
+} 

@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>GrpcWebBlazorWasm.Server-D25B9A9F-DF69-4B21-B028-8685AFFC5491</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.37.0" />
+    <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.37.0" />
+    <PackageReference Include="Grpc.AspNetCore.Web" Version="2.37.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="5.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Client\GrpcWebBlazorWasm.Client.csproj" />
+    <ProjectReference Include="..\Shared\GrpcWebBlazorWasm.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="5.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="..\Shared\Protos\Decimal.proto" GrpcServices="Server">
+      <Link>Protos\Decimal.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\Shared\Protos\Enum.proto" GrpcServices="Server">
+      <Link>Protos\Enum.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\Shared\Protos\TouristRoute.proto" GrpcServices="Server">
+      <Link>Protos\TouristRoute.proto</Link>
+    </Protobuf>
+  </ItemGroup>
+
+</Project>
