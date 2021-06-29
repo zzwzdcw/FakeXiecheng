@@ -32,6 +32,10 @@ namespace GrpcWebBlazorWasm.Client
             builder.Services.AddApiAuthorization()
                 .AddAccountClaimsPrincipalFactory<RolesClaimsPrincipalFactory>();
 
+            //¿ªÆôAntDesignÖ§³Ö
+            builder.Services.AddAntDesign();
+
+
             builder.Services.AddScoped(services =>
             {
                 // Get the service address from appsettings.json
