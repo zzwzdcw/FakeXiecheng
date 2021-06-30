@@ -3,41 +3,64 @@
 @inject TouristRouteProtoSevice.TouristRouteProtoSeviceClient TouristRouteProtoSeviceClient
 @inject NavigationManager Navigation
 
-<AuthorizeView Roles="Administrators, Users">
-    <Authorized>
-    </Authorized>
-    <NotAuthorized>
-        <div class="w-75 p-3">
-            <p>You'll need to <a href="" @onclick="IdentityLogin" @onclick:preventDefault><b>login</b></a> to view this component.</p>
+<head>
+    
+</head>
+@if (forecasts == null)
+{
+<p><em>正在加载中...</em></p>
+}
 
-            <p>When you login as a normal user (<i>email: <b>user@example.com</b> password: <b>Qwerty1234#</b></i>), you'll see this component but when you submit your name you'll see an error (<i>in your browser's developer console</i>: <b>403: Forbidden</b>) because the gRPC service requires you to login as an Administrator (<i>email: <b>admin@example.com</b> Password: <b>Qwerty1234#</b></i>)</p>
-        </div>
-    </NotAuthorized>
-</AuthorizeView>
+else
+{
+<Table DataSource="forecasts">
+    <RowTemplate>
+        <Column @bind-Field="@context.Id" />
+        <Column @bind-Field="@context.Title" />
+        <Column @bind-Field="@context.TravelDays" />
+        <ActionColumn Title="Action">
+            <Button Type="primary" OnClick="()=>RemoveTouristRoute(context.Id)">删除</Button>
+            <Button Type="primary" OnClick="()=>RemoveTouristRoute(context.Id)">修改</Button>
+            <Button Type="primary" OnClick="()=>RemoveTouristRoute(context.Id)">别点</Button>
 
-<div>
-    <Table TItem="TouristRoute" DataSource="@testData">
-        <Column Title="Title" @bind-Field="@context.Title" />
-        <Column Title="Description" @bind-Field="@context.Description" />
-        <Column Title="CreateTime" @bind-Field="@context.CreateTime" />
-        <Column Title="Price" @bind-Field="@context.Price" />
-    </Table>
-</div>
+        </ActionColumn>
+    </RowTemplate>
+    <ExpandTemplate>
+        @context.Data.Description
+    </ExpandTemplate>
+</Table>
+}
 
 @code {
 
     GrpcWebBlazorWasm.Shared.TouristRoutes testDatas;
-    TouristRoute[] testData;
+    TouristRoute[] forecasts;
 
     protected override async Task OnInitializedAsync()
     {
         testDatas  = await TouristRouteProtoSeviceClient.GetTouristRoutesAsync(new Google.Protobuf.WellKnownTypes.Empty());
-        testData = testDatas.TouristRouteList.ToArray();
+        forecasts = testDatas.TouristRouteList.ToArray();
     }
 
     private void IdentityLogin()
     {
         Navigation.NavigateTo($"authentication/login?returnUrl=" + Uri.EscapeDataString(Navigation.Uri));
     }
-    
+
+    async Task RemoveTouristRoute(string id)
+    {
+        try
+        {
+            var data = forecasts.Where(x => x.Id == id).ToArray();
+            TouristRoute request = data[0];
+            TouristRouteProtoSeviceClient.RemoveTouristRoute(request);
+        }
+        catch (Exception e)
+        {
+            testDatas = await TouristRouteProtoSeviceClient.GetTouristRoutesAsync(new Google.Protobuf.WellKnownTypes.Empty());
+            forecasts = testDatas.TouristRouteList.ToArray();
+        }
+    }
+
+
 }

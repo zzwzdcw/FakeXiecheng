@@ -56,5 +56,7 @@ namespace GrpcWebBlazorWasm.Server.Services
                 Numbers = i
             };
         }
+
+     
     }
 }
