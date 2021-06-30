@@ -46,5 +46,15 @@ namespace GrpcWebBlazorWasm.Server.Services
 
             return touristRoutes;
         }
+
+        public override async Task<AffNumbers> RemoveTouristRoute(TouristRoute request, ServerCallContext context)
+        {
+            _dbContext.Remove(request);
+            int i = _dbContext.SaveChanges();
+            return new AffNumbers
+            {
+                Numbers = i
+            };
+        }
     }
 }

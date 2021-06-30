@@ -17,6 +17,9 @@ package TouristRouteProto;
 service TouristRouteProtoSevice{
 	rpc GetTouristRoutes(.google.protobuf.Empty) returns (TouristRoutes);
 	rpc GetTouristRoute(TouristRouteId) returns (TouristRoute);
+	rpc AddTouristRoute(TouristRoute) returns(AffNumbers);
+	rpc RemoveTouristRoute(TouristRoute) returns(AffNumbers);
+	rpc ModTouristRoute(TouristRoute) returns(AffNumbers);
 }
 
 message TouristRoute {
@@ -45,3 +48,9 @@ message TouristRoutes{
 message TouristRouteId{
 	string Id=1;
 } 
+
+
+//√ª”√µΩ
+message AffNumbers{
+	int32 Numbers=1;
+}

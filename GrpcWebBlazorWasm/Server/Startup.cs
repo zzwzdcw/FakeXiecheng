@@ -129,7 +129,7 @@ namespace GrpcWebBlazorWasm.Server
                 endpoints.MapControllers();
 
                 endpoints.MapGrpcService<TouristRouteSevice>()
-                    .RequireAuthorization(new AuthorizeAttribute{Roles = "Administrators"})
+                    // .RequireAuthorization(new AuthorizeAttribute{Roles = "Administrators"})
                     //.EnableGrpcWeb() // See above: "app.UseGrpcWeb(..."
                     //.RequireCors("AllowAll")
                     ;
