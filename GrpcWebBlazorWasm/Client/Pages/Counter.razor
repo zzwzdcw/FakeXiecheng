@@ -1,16 +1,108 @@
-﻿@page "/counter"
+﻿@page "/addtouristroute"
+@using System.Security.Claims
+@using System.ComponentModel.DataAnnotations
+@using GrpcWebBlazorWasm.Shared
+@inject HttpClient HttpClient
+@inject NavigationManager Navigation
+@inject TouristRouteProtoSevice.TouristRouteProtoSeviceClient TouristRouteProtoSeviceClient
 
-<h1>Counter</h1>
+@using System.Text.Json;
 
-<p>Current count: @currentCount</p>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<div>
+    <Row>
+        <Col Span="8" />
+        <Col Span="8">
+        <h3>添加新的TouristRoute</h3>
+        <p>ID:<Input Placeholder="Id" @bind-Value="@Id" /></p>
+        <p>Title:<Input Placeholder="Title" @bind-Value="@Title" /></p>
+        <p>Description:<Input Placeholder="Description" @bind-Value="@Description" /></p>
+        <p>DepartureCity</p>
+        <p>@departureCity</p>
+        <div>
+            <RadioGroup @bind-Value="departureCity" ButtonStyle="solid">
+                <Radio RadioButton Value="@(DepartureCity.Unspecified)">Undefinition</Radio>
+                <Radio RadioButton Value="@(DepartureCity.Beijing)">Beijing</Radio>
+                <Radio RadioButton Value="@(DepartureCity.Shanghai)">Shanghai</Radio>
+                <Radio RadioButton Value="@(DepartureCity.Canton)">Canton</Radio>
+                <Radio RadioButton Value="@(DepartureCity.Shenzhen)">Shenzhen</Radio>
+            </RadioGroup>
+        </div>
 
-@code {
-    private int currentCount = 0;
+        <p>TripType</p>
+        <p>@tripType</p>
+        <div>
+            <RadioGroup @bind-Value="tripType" ButtonStyle="solid">
+                <Radio RadioButton Value="@(TripType.Unspecified)">Undefinition</Radio>
+                <Radio RadioButton Value="@(TripType.HotelAndAttractions)">HotelAndAttractions</Radio>
+                <Radio RadioButton Value="@(TripType.Group)">Group</Radio>
+                <Radio RadioButton Value="@(TripType.PrivateGroup)">PrivateGroup</Radio>
+                <Radio RadioButton Value="@(TripType.BackPackTour)">BackPackTour</Radio>
+                <Radio RadioButton Value="@(TripType.SemiBackPackTour)">SemiBackPackTour</Radio>
+            </RadioGroup>
+        </div>
 
-    private void IncrementCount()
+        <div>
+            <Text>TravelDays</Text>
+            <br />
+            <RadioGroup @bind-Value="@travelDays">
+                <Radio Value="@(TravelDays.Unspecified)">0</Radio>
+                <Radio Value="@(TravelDays.One)">1</Radio>
+                <Radio Value="@(TravelDays.Two)">2</Radio>
+                <Radio Value="@(TravelDays.Three)">3</Radio>
+                <Radio Value="@(TravelDays.Four)">4</Radio>
+                <Radio Value="@(TravelDays.Five)">5</Radio>
+                <Radio Value="@(TravelDays.Six)">6</Radio>
+                <Radio Value="@(TravelDays.Seven)">7</Radio>
+                <Radio Value="@(TravelDays.Eight)">8</Radio>
+                <Radio Value="@(TravelDays.EightPlus)">9</Radio>
+            </RadioGroup>
+
+        </div>
+
+        <br />
+        <Button Type="primary" OnClick="()=>_AddNew()">添加</Button>
+        </Col>
+        <Col Span="8" />
+    </Row>
+</div>
+
+@code{
+    public String Id { get; set; } = Guid.NewGuid().ToString();
+    public String Title { get; set; } = "默认Titel";
+    public String Description { get; set; } = "默认描述";
+    public TravelDays travelDays;
+    public TripType tripType;
+    public DepartureCity departureCity;
+    public void _AddNew()
     {
-        currentCount++;
+
+        try
+        {
+            TouristRoute request = new TouristRoute();
+            request.Id = Id;
+            request.Title = Title;
+            request.Description = Description;
+            //  TouristRouteId requestId = new TouristRouteId();
+            //  requestId.Id = Id;
+
+            request.TravelDays = travelDays;
+            request.TripType = tripType;
+            request.DepartureCity = departureCity;
+            TouristRouteProtoSeviceClient.AddTouristRoute(request);
+            //   return Task.FromResult(TouristRouteProtoSeviceClient.GetTouristRoute(requestId));
+
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+
+    }
+
+    private void IdentityLogin()
+    {
+        Navigation.NavigateTo($"authentication/login?returnUrl=" + Uri.EscapeDataString(Navigation.Uri));
     }
 }

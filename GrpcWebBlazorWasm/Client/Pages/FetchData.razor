@@ -4,29 +4,33 @@
 @inject NavigationManager Navigation
 
 <head>
-    
+
 </head>
+
 @if (forecasts == null)
 {
-<p><em>正在加载中...</em></p>
+    <p><em>正在加载中...</em></p>
 }
 
 else
 {
-<Table DataSource="forecasts">
-    <RowTemplate>
-        <Column @bind-Field="@context.Id" />
-        <Column @bind-Field="@context.Title" />
-        <Column @bind-Field="@context.TravelDays" />
-        <ActionColumn Title="Action">
-            <Button Type="primary" OnClick="()=>RemoveTouristRoute(context.Id)">删除</Button>
-        </ActionColumn>
-    </RowTemplate>
-    <ExpandTemplate>
-        @context.Data.Description
-    </ExpandTemplate>
-</Table>
+    <Table DataSource="forecasts">
+
+        <RowTemplate>
+            <Column @bind-Field="@context.Id" />
+            <Column @bind-Field="@context.Title" />
+            <Column @bind-Field="@context.TravelDays" />
+            <ActionColumn Title="Action">
+                <Button Type="primary" OnClick="()=>RemoveTouristRoute(context.Id)">删除</Button>
+            </ActionColumn>
+        </RowTemplate>
+        <ExpandTemplate>
+            @context.Data.Description
+        </ExpandTemplate>
+    </Table>
 }
+
+
 
 @code {
 
@@ -54,12 +58,14 @@ else
         }
         catch (Exception e)
         {
-            Datas = await TouristRouteProtoSeviceClient.GetTouristRoutesAsync(new Google.Protobuf.WellKnownTypes.Empty());
+             Datas = await TouristRouteProtoSeviceClient.GetTouristRoutesAsync(new Google.Protobuf.WellKnownTypes.Empty());
             forecasts = Datas.TouristRouteList.ToArray();
         }
+
     }
 
-    async Task ModTouristRoute(string id) {
+    async Task ModTouristRoute(string id)
+    {
         try
         {
             var data = forecasts.Where(x => x.Id == id).ToArray();
