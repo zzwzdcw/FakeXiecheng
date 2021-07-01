@@ -61,6 +61,7 @@ namespace GrpcWebBlazorWasm.Server.Services
 
         public override async Task<AffNumbers> ModTouristRoute(TouristRoute request, ServerCallContext context)
         {
+            Console.WriteLine("接收到：" + request.Title);
             _dbContext.Update(request);
             int i= _dbContext.SaveChanges();
             Console.WriteLine("修改了：" + request.Title);
