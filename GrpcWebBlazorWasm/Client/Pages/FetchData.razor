@@ -20,9 +20,8 @@ else
             <Column @bind-Field="@context.Id" />
             <Column @bind-Field="@context.Title" />
             <Column @bind-Field="@context.TravelDays" />
-            <ActionColumn Title="Action">
-                <Button Type="primary" OnClick="()=>RemoveTouristRoute(context.Id)">删除</Button>
-            </ActionColumn>
+            <Column @bind-Field="@context.DepartureCity" />
+            <Column @bind-Field="@context.TripType" />
         </RowTemplate>
         <ExpandTemplate>
             @context.Data.Description

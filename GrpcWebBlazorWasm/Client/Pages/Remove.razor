@@ -1,0 +1,118 @@
+﻿@page "/removetouristroute"
+@using System.Security.Claims
+@using System.ComponentModel.DataAnnotations
+@using GrpcWebBlazorWasm.Shared
+@inject HttpClient HttpClient
+@inject NavigationManager Navigation
+@inject TouristRouteProtoSevice.TouristRouteProtoSeviceClient TouristRouteProtoSeviceClient
+
+@using System.Text.Json;
+ <div>
+     <Row>
+         <Col Span="8" />
+         <Col Span="8">
+         <div>
+             <p>
+                 <input @bind="touristRouteId" placeholder="Type Tourist Route Id..." />
+                 <button @onclick="GetTouristRoute" class="btn btn-primary">调出</button>
+             </p>
+         </div>
+         <h3>删除TouristRoute</h3>
+         <p>ID:<Input Placeholder="Id" @bind-Value="@Id" /></p>
+         <p>Title:<Input Placeholder="Title" @bind-Value="@Title" /></p>
+         <p>Description:<Input Placeholder="Description" @bind-Value="@Description" /></p>
+         <p>DepartureCity</p>
+
+         <!-- <p>OrigDepartureCity +@getRequest.DepartureCity+ChoiceDepartureCity+@departureCity</p>  -->
+         <div>
+             <RadioGroup @bind-Value="departureCity" ButtonStyle="solid">
+                 <Radio RadioButton Value="@(DepartureCity.Unspecified)">Undefinition</Radio>
+                 <Radio RadioButton Value="@(DepartureCity.Beijing)">Beijing</Radio>
+                 <Radio RadioButton Value="@(DepartureCity.Shanghai)">Shanghai</Radio>
+                 <Radio RadioButton Value="@(DepartureCity.Canton)">Canton</Radio>
+                 <Radio RadioButton Value="@(DepartureCity.Shenzhen)">Shenzhen</Radio>
+             </RadioGroup>
+         </div>
+
+         <p>TripType</p>
+         <!-- <p>OrigTripType +@getRequest.TripType+ChoiceTripType+@tripType</p> -->
+         <div>
+             <RadioGroup @bind-Value="tripType" ButtonStyle="solid">
+                 <Radio RadioButton Value="@(TripType.Unspecified)">Undefinition</Radio>
+                 <Radio RadioButton Value="@(TripType.HotelAndAttractions)">HotelAndAttractions</Radio>
+                 <Radio RadioButton Value="@(TripType.Group)">Group</Radio>
+                 <Radio RadioButton Value="@(TripType.PrivateGroup)">PrivateGroup</Radio>
+                 <Radio RadioButton Value="@(TripType.BackPackTour)">BackPackTour</Radio>
+                 <Radio RadioButton Value="@(TripType.SemiBackPackTour)">SemiBackPackTour</Radio>
+             </RadioGroup>
+         </div>
+
+         <div>
+             <!-- <p>OrigTravelDays +@getRequest.TravelDays+ChoiceTravelDays+@travelDays</p> -->
+             <br />
+             <RadioGroup @bind-Value="@travelDays">
+                 <Radio Value="@(TravelDays.Unspecified)">0</Radio>
+                 <Radio Value="@(TravelDays.One)">1</Radio>
+                 <Radio Value="@(TravelDays.Two)">2</Radio>
+                 <Radio Value="@(TravelDays.Three)">3</Radio>
+                 <Radio Value="@(TravelDays.Four)">4</Radio>
+                 <Radio Value="@(TravelDays.Five)">5</Radio>
+                 <Radio Value="@(TravelDays.Six)">6</Radio>
+                 <Radio Value="@(TravelDays.Seven)">7</Radio>
+                 <Radio Value="@(TravelDays.Eight)">8</Radio>
+                 <Radio Value="@(TravelDays.EightPlus)">9</Radio>
+             </RadioGroup>
+
+         </div>
+
+         <br />
+         <Button Type="primary" OnClick="()=>RemoveTouristRoute(getRequest)">删除</Button>
+         </Col>
+         <Col Span="8" />
+     </Row>
+ </div>
+
+@code{
+    public String Id { get; set; } = "ID";
+    public String Title { get; set; }
+    public String Description { get; set; }
+    public TravelDays travelDays;
+    public TripType tripType;
+    public DepartureCity departureCity;
+    TouristRoute getRequest;
+
+    public void  RemoveTouristRoute(TouristRoute id)
+    {
+        try
+        {
+            TouristRouteProtoSeviceClient.RemoveTouristRoute(getRequest);
+        }
+        catch (Exception e)
+        {
+        }
+
+    }
+
+
+    string touristRouteId = string.Empty;
+    string serverResponse;
+
+    async Task GetTouristRoute()
+    {
+        var requestID = new TouristRouteId { Id = touristRouteId };
+        getRequest = await TouristRouteProtoSeviceClient.GetTouristRouteAsync(requestID);
+
+        Id = getRequest.Id;
+        Title = getRequest.Title;
+        Description = getRequest.Description;
+        travelDays = getRequest.TravelDays;
+        tripType = getRequest.TripType;
+        departureCity = getRequest.DepartureCity;
+
+    }
+
+    private void IdentityLogin()
+    {
+        Navigation.NavigateTo($"authentication/login?returnUrl=" + Uri.EscapeDataString(Navigation.Uri));
+    }
+}
