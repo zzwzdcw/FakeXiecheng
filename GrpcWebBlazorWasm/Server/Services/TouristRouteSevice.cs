@@ -51,12 +51,40 @@ namespace GrpcWebBlazorWasm.Server.Services
         {
             _dbContext.Remove(request);
             int i = _dbContext.SaveChanges();
+            Console.WriteLine("删除了：" + request.Title);
+            Console.WriteLine("ID  ：" + request.Id);
             return new AffNumbers
             {
                 Numbers = i
             };
         }
 
-     
+        public override async Task<AffNumbers> ModTouristRoute(TouristRoute request, ServerCallContext context)
+        {
+            _dbContext.Update(request);
+            int i= _dbContext.SaveChanges();
+            Console.WriteLine("修改了：" + request.Title);
+            Console.WriteLine("ID  ：" + request.Id);
+            return new AffNumbers
+            {
+                Numbers = i
+            };
+        }
+
+        public override async Task<AffNumbers> AddTouristRoute(TouristRoute request, ServerCallContext context)
+        {
+            Console.WriteLine(request.Title);
+            _dbContext.Add(request);
+            
+            int i = _dbContext.SaveChanges();
+            Console.WriteLine("增加了：" + request.Title);
+            Console.WriteLine("ID  ：" + request.Id);
+            Console.WriteLine("城市  ：" + request.DepartureCity);
+            return new AffNumbers
+            {
+                Numbers = i
+            };
+        }
+
     }
 }

@@ -20,9 +20,6 @@ else
         <Column @bind-Field="@context.TravelDays" />
         <ActionColumn Title="Action">
             <Button Type="primary" OnClick="()=>RemoveTouristRoute(context.Id)">删除</Button>
-            <Button Type="primary" OnClick="()=>RemoveTouristRoute(context.Id)">修改</Button>
-            <Button Type="primary" OnClick="()=>RemoveTouristRoute(context.Id)">别点</Button>
-
         </ActionColumn>
     </RowTemplate>
     <ExpandTemplate>
@@ -33,13 +30,13 @@ else
 
 @code {
 
-    GrpcWebBlazorWasm.Shared.TouristRoutes testDatas;
+    GrpcWebBlazorWasm.Shared.TouristRoutes Datas;
     TouristRoute[] forecasts;
 
     protected override async Task OnInitializedAsync()
     {
-        testDatas  = await TouristRouteProtoSeviceClient.GetTouristRoutesAsync(new Google.Protobuf.WellKnownTypes.Empty());
-        forecasts = testDatas.TouristRouteList.ToArray();
+        Datas = await TouristRouteProtoSeviceClient.GetTouristRoutesAsync(new Google.Protobuf.WellKnownTypes.Empty());
+        forecasts = Datas.TouristRouteList.ToArray();
     }
 
     private void IdentityLogin()
@@ -57,10 +54,23 @@ else
         }
         catch (Exception e)
         {
-            testDatas = await TouristRouteProtoSeviceClient.GetTouristRoutesAsync(new Google.Protobuf.WellKnownTypes.Empty());
-            forecasts = testDatas.TouristRouteList.ToArray();
+            Datas = await TouristRouteProtoSeviceClient.GetTouristRoutesAsync(new Google.Protobuf.WellKnownTypes.Empty());
+            forecasts = Datas.TouristRouteList.ToArray();
         }
     }
 
+    async Task ModTouristRoute(string id) {
+        try
+        {
+            var data = forecasts.Where(x => x.Id == id).ToArray();
+            TouristRoute request = data[0];
+            TouristRouteProtoSeviceClient.ModTouristRoute(request);
+        }
+        catch (Exception e)
+        {
+            Datas = await TouristRouteProtoSeviceClient.GetTouristRoutesAsync(new Google.Protobuf.WellKnownTypes.Empty());
+            forecasts = Datas.TouristRouteList.ToArray();
+        }
+    }
 
 }

@@ -2,6 +2,7 @@
 @using GrpcWebBlazorWasm.Shared
 @inject TouristRouteProtoSevice.TouristRouteProtoSeviceClient TouristRouteProtoSeviceClient
 @inject NavigationManager Navigation
+
 <div>
     <h1>Invoke gRPC service</h1>
     <p>gRPC response from the server with authorization</p>
@@ -32,6 +33,9 @@
         </div>
     </NotAuthorized>
 </AuthorizeView>
+
+
+
 
 @code {
     string touristRouteId = string.Empty;

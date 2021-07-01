@@ -1,0 +1,60 @@
+﻿@page "/addtouristroute"
+@using System.Security.Claims
+@using System.ComponentModel.DataAnnotations
+@using GrpcWebBlazorWasm.Shared
+@inject HttpClient HttpClient
+@inject NavigationManager Navigation
+@inject TouristRouteProtoSevice.TouristRouteProtoSeviceClient TouristRouteProtoSeviceClient
+
+@using System.Text.Json;
+
+
+<div>
+    <Row>
+        <Col Span="8" />
+        <Col Span="8">
+        <h3>添加新的TouristRoute</h3>
+        <p>ID:<Input Placeholder="Id" @bind-Value="@Id" /></p>
+        <p>Title:<Input Placeholder="Title" @bind-Value="@Title" /></p>
+        <p>Description:<Input Placeholder="Description" @bind-Value="@Description" /></p>     
+        <Button Type="primary" OnClick="()=>_AddNew()">添加</Button>
+        </Col>
+        <Col Span="8" />
+    </Row>
+</div>
+
+@code{
+    public String Id { get; set; } = Guid.NewGuid().ToString();
+    public String Title { get; set; } = "默认Titel";
+    public String Description { get; set; } = "默认描述";
+    public TravelDays travelDays { get; set; } = 0;
+    public TripType tripType { get; set; } = 0;
+    public DepartureCity departureCity { get; set; } = 0;
+
+    public  void _AddNew() {
+
+        try
+        {
+            TouristRoute request = new TouristRoute();
+            request.Id = Id;
+            request.Title = Title;
+            request.Description = Description;
+            TouristRouteId requestId = new TouristRouteId();
+            requestId.Id = Id;
+            TouristRouteProtoSeviceClient.AddTouristRoute(request);
+         //   return Task.FromResult(TouristRouteProtoSeviceClient.GetTouristRoute(requestId));
+
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+
+    }
+
+    private void IdentityLogin()
+    {
+        Navigation.NavigateTo($"authentication/login?returnUrl=" + Uri.EscapeDataString(Navigation.Uri));
+    }
+}
