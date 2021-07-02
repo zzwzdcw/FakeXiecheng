@@ -60,7 +60,10 @@
                     </RadioGroup>
 
                 </div>
-
+                <div>
+                    <p>Price：</p>
+                    <AntDesign.InputNumber @bind-Value="pricedecimal" Min="0" Max="10000000000" DefaultValue="0"></AntDesign.InputNumber>
+                </div>
                 <br />
                 <Button Type="primary" OnClick="()=>_AddNew()">添加</Button>
                 </Col>
@@ -82,6 +85,8 @@
     public TravelDays travelDays;
     public TripType tripType;
     public DepartureCity departureCity;
+    public decimal pricedecimal;
+
     public void _AddNew()
     {
 
@@ -97,6 +102,8 @@
             request.TravelDays = travelDays;
             request.TripType = tripType;
             request.DepartureCity = departureCity;
+            request.Price = pricedecimal;
+            Console.WriteLine(request.OriginalPrice.ToString());
             TouristRouteProtoSeviceClient.AddTouristRoute(request);
             //   return Task.FromResult(TouristRouteProtoSeviceClient.GetTouristRoute(requestId));
 

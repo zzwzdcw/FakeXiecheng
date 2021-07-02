@@ -66,7 +66,10 @@
                     </RadioGroup>
 
                 </div>
-
+                <div>
+                    <p>Price：</p>
+                    <AntDesign.InputNumber @bind-Value="@pricedecimal" Min="0" Max="10000000000" DefaultValue="@pricedecimal"></AntDesign.InputNumber>
+                </div>
                 <br />
                 <Button Type="primary" OnClick="()=>_Moddata()">修改</Button>
                 </Col>
@@ -90,6 +93,8 @@
     public TripType tripType;
     public DepartureCity departureCity;
     TouristRoute getRequest;
+    public decimal pricedecimal;
+
     public void _Moddata()
     {
         try
@@ -103,7 +108,10 @@
             getRequest.TravelDays = travelDays;
             getRequest.TripType = tripType;
             getRequest.DepartureCity = departureCity;
+            getRequest.Price = pricedecimal;
+
             TouristRouteProtoSeviceClient.ModTouristRoute(getRequest);
+
             //   return Task.FromResult(TouristRouteProtoSeviceClient.GetTouristRoute(requestId));
 
         }
@@ -129,7 +137,8 @@
         travelDays = getRequest.TravelDays;
         tripType = getRequest.TripType;
         departureCity = getRequest.DepartureCity;
-
+        pricedecimal = (decimal)getRequest.Price;
+        Console.WriteLine(pricedecimal);
     }
 
     private void IdentityLogin()

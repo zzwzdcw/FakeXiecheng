@@ -61,6 +61,7 @@ namespace GrpcWebBlazorWasm.Server.Services
 
         public override async Task<AffNumbers> ModTouristRoute(TouristRoute request, ServerCallContext context)
         {
+            request.OriginalPrice = request.Price;
             Console.WriteLine("接收到：" + request.Title);
             _dbContext.Update(request);
             int i= _dbContext.SaveChanges();
@@ -74,13 +75,18 @@ namespace GrpcWebBlazorWasm.Server.Services
 
         public override async Task<AffNumbers> AddTouristRoute(TouristRoute request, ServerCallContext context)
         {
+
+            request.OriginalPrice = request.Price;
             Console.WriteLine(request.Title);
+            
             _dbContext.Add(request);
             
             int i = _dbContext.SaveChanges();
             Console.WriteLine("增加了：" + request.Title);
             Console.WriteLine("ID  ：" + request.Id);
             Console.WriteLine("城市  ：" + request.DepartureCity);
+            Console.WriteLine("price：" + request.OriginalPrice);
+
             return new AffNumbers
             {
                 Numbers = i

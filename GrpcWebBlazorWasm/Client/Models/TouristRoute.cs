@@ -20,7 +20,9 @@ namespace GrpcWebBlazorWasm.Shared
         //
         public void TouristRouteAppend()
         {
-            Price = OriginalPrice * (decimal)(DiscountPresent ?? 1);
+
+                Price = OriginalPrice * (decimal)(DiscountPresent ?? 1);
+
         }
     }
 }
