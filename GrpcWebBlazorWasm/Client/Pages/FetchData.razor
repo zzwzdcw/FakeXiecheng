@@ -18,10 +18,15 @@ else
 
         <RowTemplate>
             <Column @bind-Field="@context.Id" />
-            <Column @bind-Field="@context.Title" />
+            <Column @bind-Field="@context.Title">
+                <a href="/show/@context.Id">@context.Title</a>
+            </Column>
             <Column @bind-Field="@context.TravelDays" />
             <Column @bind-Field="@context.DepartureCity" />
             <Column @bind-Field="@context.TripType" />
+            <Column @bind-Field="@context.Price" Format="price" />
+
+
         </RowTemplate>
         <ExpandTemplate>
             @context.Data.Description

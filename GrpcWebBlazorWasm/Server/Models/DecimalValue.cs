@@ -29,5 +29,7 @@ namespace GrpcWebBlazorWasm.Shared
             var nanos = decimal.ToInt32((value - units) * NanoFactor);
             return new DecimalValue(units, nanos);
         }
+
+      
     }
 }

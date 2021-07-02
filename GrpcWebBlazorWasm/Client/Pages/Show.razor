@@ -1,0 +1,90 @@
+﻿@page "/show/{getid}"
+@using System.Security.Claims
+@using System.ComponentModel.DataAnnotations
+@using GrpcWebBlazorWasm.Shared
+@inject HttpClient HttpClient
+@inject NavigationManager Navigation
+@inject TouristRouteProtoSevice.TouristRouteProtoSeviceClient TouristRouteProtoSeviceClient
+
+@using System.Text.Json;
+
+
+@if (getRequest == null)
+{
+    <p>加载中</p>
+}
+else
+{
+    <p>@getRequest.Title</p>
+    <p>@getRequest.Description</p>
+    <p>@price</p>
+    <p>TravelDays:</p>
+    <p>@getRequest.TravelDays</p>
+    <p>TripType:</p>
+    <p>@getRequest.TripType</p>
+    <p>DepartureCity:</p>
+    <p>@getRequest.DepartureCity</p>
+    @((MarkupString)getRequest.Fees)
+    @((MarkupString)getRequest.Notes)
+    @((MarkupString)getRequest.Features)
+}
+
+
+
+
+@code{
+    public String Id { get; set; }
+    public String Title { get; set; }
+    public String Description { get; set; }
+    public TravelDays travelDays;
+    public TripType tripType;
+    public String features;
+    public String fees;
+    public String notes;
+    public DepartureCity departureCity;
+    decimal price;
+    TouristRoute getRequest;
+
+
+    [Parameter]
+    public String getid { get; set; }
+
+
+    //接收url中的参数
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        if (parameters.TryGetValue<string>(nameof(getid), out var value))
+        {
+            if (value is null)
+            {
+                Id = "错误！！！";
+            }
+            else
+            {
+                Id = $"{value}.";
+
+
+            }
+        }
+
+        await base.SetParametersAsync(parameters);
+    }
+
+    protected override async Task OnInitializedAsync()
+
+    {
+        var requestID = new TouristRouteId { Id = getid };
+        getRequest = await TouristRouteProtoSeviceClient.GetTouristRouteAsync(requestID);
+        price = getRequest.Price;
+
+    }
+
+
+
+
+    private void IdentityLogin()
+    {
+        Navigation.NavigateTo($"authentication/login?returnUrl=" + Uri.EscapeDataString(Navigation.Uri));
+    }
+
+}
