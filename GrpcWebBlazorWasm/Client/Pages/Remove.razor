@@ -71,6 +71,8 @@
                 </div>
                 <br />
                 <Button Type="primary" OnClick="()=>RemoveTouristRoute(getRequest)">删除</Button>
+                <p>@stat</p>
+
                 </Col>
                 <Col Span="8" />
             </Row>
@@ -90,12 +92,16 @@
     public TripType tripType;
     public DepartureCity departureCity;
     TouristRoute getRequest;
+    public string stat;
+
     public decimal pricedecimal;
 
     public void RemoveTouristRoute(TouristRoute id)
     {
         try
         {
+            stat = "ok";
+
             TouristRouteProtoSeviceClient.RemoveTouristRoute(getRequest);
         }
         catch (Exception e)
@@ -119,7 +125,7 @@
         travelDays = getRequest.TravelDays;
         tripType = getRequest.TripType;
         departureCity = getRequest.DepartureCity;
-        
+
         pricedecimal = getRequest.Price;
 
     }

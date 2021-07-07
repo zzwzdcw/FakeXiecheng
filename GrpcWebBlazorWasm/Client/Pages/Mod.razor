@@ -72,6 +72,8 @@
                 </div>
                 <br />
                 <Button Type="primary" OnClick="()=>_Moddata()">修改</Button>
+                <p>@stat</p>
+
                 </Col>
                 <Col Span="8" />
             </Row>
@@ -93,6 +95,8 @@
     public TripType tripType;
     public DepartureCity departureCity;
     TouristRoute getRequest;
+    public string stat;
+
     public decimal pricedecimal;
 
     public void _Moddata()
@@ -109,6 +113,7 @@
             getRequest.TripType = tripType;
             getRequest.DepartureCity = departureCity;
             getRequest.Price = pricedecimal;
+            stat = "ok";
 
             TouristRouteProtoSeviceClient.ModTouristRoute(getRequest);
 

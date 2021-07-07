@@ -50,7 +50,6 @@ message TouristRouteId{
 } 
 
 
-//Ã»ÓÃµ½
 message AffNumbers{
 	int32 Numbers=1;
 }

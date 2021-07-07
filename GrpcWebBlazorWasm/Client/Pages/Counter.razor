@@ -66,6 +66,7 @@
                 </div>
                 <br />
                 <Button Type="primary" OnClick="()=>_AddNew()">添加</Button>
+                <p>@stat</p>
                 </Col>
                 <Col Span="8" />
             </Row>
@@ -86,7 +87,7 @@
     public TripType tripType;
     public DepartureCity departureCity;
     public decimal pricedecimal;
-
+    public string stat;
     public void _AddNew()
     {
 
@@ -104,6 +105,7 @@
             request.DepartureCity = departureCity;
             request.Price = pricedecimal;
             Console.WriteLine(request.OriginalPrice.ToString());
+            stat = "ok";
             TouristRouteProtoSeviceClient.AddTouristRoute(request);
             //   return Task.FromResult(TouristRouteProtoSeviceClient.GetTouristRoute(requestId));
 
